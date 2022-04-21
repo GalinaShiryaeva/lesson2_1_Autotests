@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="MainKtTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2022-04-21T10:16:35" hostname="DESKTOP-5VI1UV6" time="0.015">
+  <properties/>
+  <testcase name="visaMir_commissionIsMore35WhenPaymentAmountIsMoreThan4666" classname="MainKtTest" time="0.013"/>
+  <testcase name="maestroMastercardVisaMir_commissionIsMinus1WhenPaymentAmountIsMoreThan600kPerMonth" classname="MainKtTest" time="0.0"/>
+  <testcase name="visaMir_commissionIs35WhenPaymentAmountIsLessThan4666" classname="MainKtTest" time="0.0"/>
+  <testcase name="mastercardMaestro_commissionIsNotZeroWhenMonthlyAmountIsUnder75kNotWithinAMonth" classname="MainKtTest" time="0.0"/>
+  <testcase name="mastercardMaestro_commissionIsZeroWhenMonthlyAmountIsUnder75kWithinAMonth" classname="MainKtTest" time="0.0"/>
+  <testcase name="vkPay_commissionIsZeroWhenPaymentAmountIsNotMoreThan15kAndNotMoreThan40kPerMonth" classname="MainKtTest" time="0.0"/>
+  <testcase name="mastercardMaestro_commissionIsNotZeroWhenMonthlyAmountIsOver75kNotWithinAMonth" classname="MainKtTest" time="0.0"/>
+  <testcase name="vkPay_commissionIsMinus1WhenPaymentAmountIsMoreThan15kButNotMoreThan40kPerMonth" classname="MainKtTest" time="0.0"/>
+  <testcase name="mastercardMaestro_commissionIsNotZeroWhenMonthlyAmountIsOver75kWithinAMonth" classname="MainKtTest" time="0.001"/>
+  <testcase name="visaMir_commissionIsMinus1WhenPaymentAmountIsLessThan35" classname="MainKtTest" time="0.0"/>
+  <testcase name="vkPay_commissionIsMinus1WhenPaymentAmountIsNotMoreThan15kButMoreThan40kPerMonth" classname="MainKtTest" time="0.0"/>
+  <system-out><![CDATA[Больше месяца? true
+Больше месяца? true
+Вы превысили лимит переводов в календарном месяце!
+Больше месяца? true
+Больше месяца? false
+Больше месяца? true
+Больше месяца? true
+Больше месяца? false
+Больше месяца? true
+Сумма перевода со счета VK Pay не должна превышать 15 000,00 руб.
+Больше месяца? true
+Больше месяца? true
+Минимальная сумма перевода 35 руб.
+Больше месяца? true
+Вы превысили лимит переводов со счета VK Pay за календарный месяц!
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">lesson2_1_Autotests</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Main.kt</span></div><h1>Main.kt</h1><pre class="source lang-java linenums">import kotlin.random.Random
+import kotlin.random.nextUInt
+
+const val KOPECKS_IN_RUBLE = 100u
+
+const val MAX_AMOUNT_FOR_MASTERCARD_MAESTRO = 7_500_000u
+const val MIN_AMOUNT_FOR_VISA_AND_MIR = 3_600u
+const val MIN_TAX_FOR_VISA_AND_MIR = 3_500u
+const val TAX_FOR_VISA_AND_MIR = 0.0075
+
+const val LIMIT_PER_CARD_PER_MONTH = 60_000_000u
+const val LIMIT_VK_PAY_ONETIME = 1_500_000u
+const val LIMIT_VK_PAY_PER_MONTH = 4_000_000u
+
+fun main() {
+<span class="nc" id="L16">    print(&quot;Р’РІРµРґРёС‚Рµ СЃСѓРјРјСѓ РїРµСЂРµРІРѕРґР° РІ СЂСѓР±Р»СЏС…: &quot;)</span>
+<span class="nc" id="L17">    val paymentAmount: UInt = readln().toUInt() * KOPECKS_IN_RUBLE</span>
+<span class="nc" id="L18">    val cardType = CardTypes.values().random().name</span>
+<span class="nc" id="L19">    val monthlyPayments = Random.nextUInt(70_000_000u)</span>
+
+<span class="nc" id="L21">    println(&quot;\nРџРµСЂРµРІРѕРґ РІ СЃСѓРјРјРµ: &quot; + &quot;%.2f&quot;.format(paymentAmount.toDouble() / KOPECKS_IN_RUBLE.toDouble()) + &quot; СЂСѓР±.&quot;)</span>
+<span class="nc" id="L22">    println(&quot;РљР°СЂС‚Р°: $cardType&quot;)</span>
+<span class="nc" id="L23">    println(&quot;РЎСѓРјРјР° РїР»Р°С‚РµР¶РµР№ Р·Р° РјРµСЃСЏС†: &quot; + &quot;%.2f&quot;.format(monthlyPayments.toDouble() / KOPECKS_IN_RUBLE.toDouble()) + &quot; СЂСѓР±.&quot;)</span>
+
+<span class="nc" id="L25">    val commission = calculateCommission(cardType, monthlyPayments, paymentAmount) / KOPECKS_IN_RUBLE.toDouble()</span>
+<span class="nc" id="L26">    println(&quot;Р’Р°С€Р° РєРѕРјРёСЃСЃРёСЏ Р·Р° РїРµСЂРµРІРѕРґ СЃРѕСЃС‚Р°РІРёР»Р°: &quot; + &quot;%.2f&quot;.format(commission) + &quot; СЂСѓР±.&quot;)</span>
+<span class="nc" id="L27">}</span>
+
+<span class="pc bpc" id="L29" title="1 of 4 branches missed.">fun calculateCommission(</span>
+    cardType: String,
+<span class="fc" id="L31">    previousPayments: UInt = 0u,</span>
+    paymentAmount: UInt,
+<span class="fc" id="L33">    isWithinAMonth: Boolean = true</span>
+): Double {
+
+<span class="fc" id="L36">    println(&quot;Р‘РѕР»СЊС€Рµ РјРµСЃСЏС†Р°? $isWithinAMonth&quot;)</span>
+
+<span class="fc" id="L38">    val amountForTaxEquals35 = MIN_TAX_FOR_VISA_AND_MIR.toDouble() / TAX_FOR_VISA_AND_MIR // 466 666.6666666667 РєРѕРїРµРµРє</span>
+
+<span class="fc bfc" id="L40" title="All 6 branches covered.">    if (cardType != CardTypes.VKPAY.name &amp;&amp; isWithinAMonth &amp;&amp; (previousPayments + paymentAmount) &gt; LIMIT_PER_CARD_PER_MONTH) {</span>
+<span class="fc" id="L41">        println(&quot;Р’С‹ РїСЂРµРІС‹СЃРёР»Рё Р»РёРјРёС‚ РїРµСЂРµРІРѕРґРѕРІ РІ РєР°Р»РµРЅРґР°СЂРЅРѕРј РјРµСЃСЏС†Рµ!&quot;)</span>
+<span class="fc" id="L42">        return -1.0</span>
+<span class="fc bfc" id="L43" title="All 4 branches covered.">    } else if (cardType == CardTypes.VKPAY.name &amp;&amp; paymentAmount &gt; LIMIT_VK_PAY_ONETIME) {</span>
+<span class="fc" id="L44">        println(&quot;РЎСѓРјРјР° РїРµСЂРµРІРѕРґР° СЃРѕ СЃС‡РµС‚Р° VK Pay РЅРµ РґРѕР»Р¶РЅР° РїСЂРµРІС‹С€Р°С‚СЊ 15 000,00 СЂСѓР±.&quot;)</span>
+<span class="fc" id="L45">        return -1.0</span>
+<span class="pc bpc" id="L46" title="1 of 6 branches missed.">    } else if (cardType == CardTypes.VKPAY.name &amp;&amp; isWithinAMonth &amp;&amp; (previousPayments + paymentAmount) &gt; LIMIT_VK_PAY_PER_MONTH) {</span>
+<span class="fc" id="L47">        println(&quot;Р’С‹ РїСЂРµРІС‹СЃРёР»Рё Р»РёРјРёС‚ РїРµСЂРµРІРѕРґРѕРІ СЃРѕ СЃС‡РµС‚Р° VK Pay Р·Р° РєР°Р»РµРЅРґР°СЂРЅС‹Р№ РјРµСЃСЏС†!&quot;)</span>
+<span class="fc" id="L48">        return -1.0</span>
+<span class="fc" id="L49">    } else return when (cardType) {</span>
+<span class="pc bpc" id="L50" title="1 of 4 branches missed.">        CardTypes.MASTERCARD.name, CardTypes.MAESTRO.name -&gt; {</span>
+<span class="fc bfc" id="L51" title="All 4 branches covered.">            if (isWithinAMonth &amp;&amp; (previousPayments + paymentAmount) &lt;= MAX_AMOUNT_FOR_MASTERCARD_MAESTRO)</span>
+<span class="fc" id="L52">                0.0</span>
+<span class="fc" id="L53">            else (paymentAmount.toDouble() * 0.006 + 2_000.0)</span>
+        }
+<span class="fc bfc" id="L55" title="All 4 branches covered.">        CardTypes.VISA.name, CardTypes.MIR.name -&gt; {</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            if (paymentAmount &lt; MIN_AMOUNT_FOR_VISA_AND_MIR) {</span>
+<span class="fc" id="L57">                println(&quot;РњРёРЅРёРјР°Р»СЊРЅР°СЏ СЃСѓРјРјР° РїРµСЂРµРІРѕРґР° 35 СЂСѓР±.&quot;)</span>
+<span class="fc" id="L58">                return -1.0</span>
+            } else {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">                if (paymentAmount.toDouble() &gt; amountForTaxEquals35) {</span>
+<span class="fc" id="L61">                    paymentAmount.toDouble() * TAX_FOR_VISA_AND_MIR</span>
+                } else {
+<span class="fc" id="L63">                    MIN_TAX_FOR_VISA_AND_MIR.toDouble()</span>
+                }
+            }
+        }
+<span class="fc" id="L67">        else -&gt; 0.0</span>
+    }
+}
+
+enum class CardTypes {
+<span class="fc" id="L72">    MASTERCARD,</span>
+<span class="fc" id="L73">    MAESTRO,</span>
+<span class="fc" id="L74">    VISA,</span>
+<span class="fc" id="L75">    MIR,</span>
+<span class="fc" id="L76">    VKPAY</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
