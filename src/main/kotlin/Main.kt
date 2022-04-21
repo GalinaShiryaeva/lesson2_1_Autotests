@@ -29,32 +29,33 @@ fun main() {
 fun calculateCommission(
     cardType: String,
     previousPayments: UInt = 0u,
-    paymentAmount: UInt
+    paymentAmount: UInt,
+    isWithinAMonth: Boolean = true
 ): Double {
-    val isMoreThanAMonth: Boolean = Random.nextBoolean()
-    println("Больше месяца? $isMoreThanAMonth")
+
+    println("Больше месяца? $isWithinAMonth")
 
     val amountForTaxEquals35 = MIN_TAX_FOR_VISA_AND_MIR.toDouble() / TAX_FOR_VISA_AND_MIR // 466 666.6666666667 копеек
 
-    if (cardType != CardTypes.VKPAY.name && !isMoreThanAMonth && previousPayments + paymentAmount > LIMIT_PER_CARD_PER_MONTH) {
+    if (cardType != CardTypes.VKPAY.name && isWithinAMonth && (previousPayments + paymentAmount) > LIMIT_PER_CARD_PER_MONTH) {
         println("Вы превысили лимит переводов в календарном месяце!")
-        return 0.0
+        return -1.0
     } else if (cardType == CardTypes.VKPAY.name && paymentAmount > LIMIT_VK_PAY_ONETIME) {
-        println("Сумма перевода со счета VK Pay не должна превышать 15 000, 00 руб.")
-        return 0.0
-    } else if (cardType == CardTypes.VKPAY.name && !isMoreThanAMonth && previousPayments + paymentAmount > LIMIT_VK_PAY_PER_MONTH) {
+        println("Сумма перевода со счета VK Pay не должна превышать 15 000,00 руб.")
+        return -1.0
+    } else if (cardType == CardTypes.VKPAY.name && isWithinAMonth && (previousPayments + paymentAmount) > LIMIT_VK_PAY_PER_MONTH) {
         println("Вы превысили лимит переводов со счета VK Pay за календарный месяц!")
-        return 0.0
+        return -1.0
     } else return when (cardType) {
         CardTypes.MASTERCARD.name, CardTypes.MAESTRO.name -> {
-            if (!isMoreThanAMonth && paymentAmount <= MAX_AMOUNT_FOR_MASTERCARD_MAESTRO)
+            if (isWithinAMonth && (previousPayments + paymentAmount) <= MAX_AMOUNT_FOR_MASTERCARD_MAESTRO)
                 0.0
             else (paymentAmount.toDouble() * 0.006 + 2_000.0)
         }
         CardTypes.VISA.name, CardTypes.MIR.name -> {
             if (paymentAmount < MIN_AMOUNT_FOR_VISA_AND_MIR) {
                 println("Минимальная сумма перевода 35 руб.")
-                return 0.0
+                return -1.0
             } else {
                 if (paymentAmount.toDouble() > amountForTaxEquals35) {
                     paymentAmount.toDouble() * TAX_FOR_VISA_AND_MIR
